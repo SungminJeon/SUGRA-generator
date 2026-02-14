@@ -1,0 +1,369 @@
+1: sidelink=883, port=3, extra=-3, int=1
+  LaTeX: {22\overset{\textcolor{red}{3}}{1}}
+  Eigenvalues: [-3.61803, -3, -1.38197, 3.88919e-17]
+2: sidelink=885, port=5, extra=-5, int=1
+  LaTeX: {2222\overset{\textcolor{red}{5}}{1}}
+  Eigenvalues: [-5.25561, -3.66618, -2.79064, -1.66029, -0.627284, 1.7228e-17]
+3: sidelink=22, port=1, extra=-2, int=1
+  LaTeX: {\overset{\textcolor{red}{2}}{1}31}
+  Eigenvalues: [-3.80194, -2.44504, -0.75302, 7.48498e-17]
+4: sidelink=22, port=2, extra=-1, int=1
+  LaTeX: {1\overset{\textcolor{red}{1}}{3}1}
+  Eigenvalues: [-4, -1, -1, -3.73933e-18]
+5: sidelink=33, port=1, extra=-3, int=1
+  LaTeX: {\overset{\textcolor{red}{3}}{1}2321}
+  Eigenvalues: [-4.13883, -3.45989, -2.4898, -1.61652, -0.294961, 8.86863e-17]
+6: sidelink=33, port=3, extra=-1, int=1
+  LaTeX: {12\overset{\textcolor{red}{1}}{3}21}
+  Eigenvalues: [-4.30278, -2.61803, -2, -0.697224, -0.381966, -5.22159e-16]
+7: sidelink=44, port=5, extra=-1, int=1
+  LaTeX: {1231\overset{\textcolor{red}{1}}{5}1321}
+  Eigenvalues: [-5.68251, -3.9563, -3.88509, -2.20906, -2.16076, -0.898226, -0.661739, -0.37341, -0.172909, 7.76655e-16]
+8: sidelink=55, port=1, extra=-5, int=1
+  LaTeX: {\overset{\textcolor{red}{5}}{1}2231513221}
+  Eigenvalues: [-5.49543, -5.2557, -4.02287, -3.94966, -2.90016, -2.83162, -1.39583, -1.29575, -0.51606, -0.255795, -0.0811319, 9.44767e-17]
+9: sidelink=55, port=6, extra=-1, int=1
+  LaTeX: {12231\overset{\textcolor{red}{1}}{5}13221}
+  Eigenvalues: [-5.68261, -4.02642, -3.9658, -2.91373, -2.87947, -1.41534, -1.37282, -0.865964, -0.531124, -0.233328, -0.11339, 3.57418e-16]
+10: sidelink=331, port=1, extra=-3, int=1
+  LaTeX: {\overset{\textcolor{red}{3}}{1}315131}
+  Eigenvalues: [-5.49368, -3.87584, -3.67167, -3.15212, -0.950501, -0.66302, -0.193173, -4.26542e-17]
+11: sidelink=331, port=2, extra=-2, int=1
+  LaTeX: {1\overset{\textcolor{red}{2}}{3}15131}
+  Eigenvalues: [-5.49685, -4.07457, -3.67321, -1.72816, -1, -0.810169, -0.21704, -3.95921e-16]
+12: sidelink=331, port=4, extra=-1, int=1
+  LaTeX: {131\overset{\textcolor{red}{1}}{5}131}
+  Eigenvalues: [-5.68133, -3.73205, -3.64207, -1, -1, -0.676596, -0.267949, 3.51198e-16]
+13: sidelink=23, port=1, extra=-2, int=1
+  LaTeX: {\overset{\textcolor{red}{2}}{1}321}
+  Eigenvalues: [-4, -2.61803, -2, -0.381966, -1.90324e-16]
+14: sidelink=23, port=2, extra=-1, int=1
+  LaTeX: {1\overset{\textcolor{red}{1}}{3}21}
+  Eigenvalues: [-4.17009, -2.31111, -1, -0.518806, -6.25283e-16]
+15: sidelink=23, port=3, extra=-2, int=1
+  LaTeX: {13\overset{\textcolor{red}{2}}{2}1}
+  Eigenvalues: [-4.09529, -2.73764, -1.52274, -0.644326, 1.90359e-16]
+16: sidelink=23, port=4, extra=-3, int=1
+  LaTeX: {132\overset{\textcolor{red}{3}}{1}}
+  Eigenvalues: [-4, -3.41421, -2, -0.585786, -2.11041e-16]
+17: sidelink=24, port=1, extra=-2, int=1
+  LaTeX: {\overset{\textcolor{red}{2}}{1}3221}
+  Eigenvalues: [-4.0615, -3, -2.39634, -1.30618, -0.235985, -1.2169e-17]
+18: sidelink=24, port=2, extra=-1, int=1
+  LaTeX: {1\overset{\textcolor{red}{1}}{3}221}
+  Eigenvalues: [-4.21432, -3, -1.46081, -1, -0.324869, -5.36589e-16]
+19: sidelink=34, port=1, extra=-3, int=1
+  LaTeX: {\overset{\textcolor{red}{3}}{1}3151321}
+  Eigenvalues: [-5.49457, -3.93594, -3.84557, -3.15358, -2.17945, -0.763819, -0.478774, -0.148302, 3.70356e-16]
+20: sidelink=34, port=2, extra=-2, int=1
+  LaTeX: {1\overset{\textcolor{red}{2}}{3}151321}
+  Eigenvalues: [-5.49773, -4.08051, -3.9022, -2.18129, -1.72642, -0.927705, -0.520953, -0.163192, -3.59147e-16]
+21: sidelink=34, port=4, extra=-1, int=1
+  LaTeX: {131\overset{\textcolor{red}{1}}{5}1321}
+  Eigenvalues: [-5.68192, -3.92708, -3.68083, -2.18509, -1, -0.830196, -0.489014, -0.205878, 4.81095e-16]
+22: sidelink=35, port=1, extra=-3, int=1
+  LaTeX: {\overset{\textcolor{red}{3}}{1}31513221}
+  Eigenvalues: [-5.49466, -4, -3.85772, -3.15515, -2.8916, -1.38594, -0.735415, -0.369753, -0.109767, 1.32603e-15]
+23: sidelink=35, port=2, extra=-2, int=1
+  LaTeX: {1\overset{\textcolor{red}{2}}{3}1513221}
+  Eigenvalues: [-5.49782, -4.08643, -3.97272, -2.8936, -1.72861, -1.3859, -0.913537, -0.402793, -0.118595, 5.20609e-16]
+24: sidelink=35, port=4, extra=-1, int=1
+  LaTeX: {131\overset{\textcolor{red}{1}}{5}13221}
+  Eigenvalues: [-5.68197, -4, -3.68367, -2.89609, -1.39561, -1, -0.791318, -0.403099, -0.148231, 3.3243e-16]
+25: sidelink=35, port=9, extra=-5, int=1
+  LaTeX: {13151322\overset{\textcolor{red}{5}}{1}}
+  Eigenvalues: [-5.49445, -5.2557, -3.98785, -3.6739, -2.83769, -1.31372, -0.913729, -0.399715, -0.123255, 6.78709e-17]
+26: sidelink=45, port=5, extra=-1, int=1
+  LaTeX: {1231\overset{\textcolor{red}{1}}{5}13221}
+  Eigenvalues: [-5.68256, -4.00824, -3.90863, -2.89689, -2.18492, -1.39383, -0.884955, -0.602835, -0.303416, -0.133718, 3.56366e-16]
+27: sidelink=45, port=10, extra=-5, int=1
+  LaTeX: {123151322\overset{\textcolor{red}{5}}{1}}
+  Eigenvalues: [-5.49534, -5.2557, -4, -3.89625, -2.83884, -2.17947, -1.30881, -0.601764, -0.321847, -0.10199, -3.73934e-17]
+28: sidelink=991, port=2, extra=-3, int=1
+  LaTeX: {2\overset{\overset{\textcolor{red}{3}}{1}}{3}1}
+  Eigenvalues: [-4.19353, -3.29496, -1.70504, -0.806473, 4.3944e-16]
+29: sidelink=991, port=3, extra=-2, int=1
+  LaTeX: {2\underset{\textcolor{red}{2}}{\overset{1}{3}}1}
+  Eigenvalues: [-4.41421, -2, -1.58579, -1, -3.96969e-16]
+30: sidelink=9920, port=5, extra=-3, int=1
+  LaTeX: {12\overset{2}{3}\overset{\textcolor{red}{3}}{1}}
+  Eigenvalues: [-4.31801, -3.33419, -2.41038, -1.49371, -0.443713, -3.12607e-17]
+31: sidelink=92, port=4, extra=-2, int=1
+  LaTeX: {2\overset{2}{3}\overset{\textcolor{red}{2}}{1}}
+  Eigenvalues: [-4.24698, -2.55496, -2, -1.19806, -2.19073e-16]
+32: sidelink=94, port=1, extra=-1, int=1
+  LaTeX: {\overset{\textcolor{red}{1}}{2}313221}
+  Eigenvalues: [-4.19446, -3.79066, -2.89555, -2.15209, -1.33895, -0.439718, -0.188569, 4.46956e-16]
+33: sidelink=94, port=2, extra=-2, int=1
+  LaTeX: {2\overset{\textcolor{red}{2}}{3}13221}
+  Eigenvalues: [-4.33683, -3.90051, -2.89238, -2, -1.5036, -1.14017, -0.226519, 1.89968e-16]
+34: sidelink=95, port=1, extra=-1, int=1
+  LaTeX: {\overset{\textcolor{red}{1}}{2}2313221}
+  Eigenvalues: [-4.21432, -3.84776, -3, -2.76537, -1.46081, -1.23463, -0.324869, -0.152241, -4.62652e-16]
+35: sidelink=96, port=1, extra=-1, int=1
+  LaTeX: {\overset{\textcolor{red}{1}}{3}13221}
+  Eigenvalues: [-4.14386, -3.61803, -2.85844, -1.38197, -0.78169, -0.216003, -3.71224e-16]
+36: sidelink=96, port=6, extra=-5, int=1
+  LaTeX: {31322\overset{\textcolor{red}{5}}{1}}
+  Eigenvalues: [-5.25575, -4.09802, -3.35778, -2.76228, -1.26996, -0.256209, 9.56793e-17]
+37: sidelink=99, port=1, extra=-1, int=1
+  LaTeX: {\overset{\textcolor{red}{1}}{2}31321}
+  Eigenvalues: [-4.17009, -3.73205, -2.31111, -2, -0.518806, -0.267949, 1.48665e-17]
+38: sidelink=99, port=2, extra=-2, int=1
+  LaTeX: {2\overset{\textcolor{red}{2}}{3}1321}
+  Eigenvalues: [-4.32829, -3.82901, -2.19913, -2, -1.27884, -0.364737, -6.36214e-16]
+39: sidelink=99, port=6, extra=-5, int=1
+  LaTeX: {23132\overset{\textcolor{red}{5}}{1}}
+  Eigenvalues: [-5.25682, -4.1359, -3.66109, -2.10745, -1.52134, -0.317392, -1.71003e-16]
+40: sidelink=911, port=1, extra=-1, int=1
+  LaTeX: {\overset{\textcolor{red}{1}}{3}1321}
+  Eigenvalues: [-4.10637, -3.5593, -2.1576, -0.834906, -0.341832, -8.85918e-17]
+41: sidelink=913, port=2, extra=-2, int=1
+  LaTeX: {2\overset{\textcolor{red}{2}}{3}131}
+  Eigenvalues: [-4.30278, -3.61803, -2, -1.38197, -0.697224, -1.73593e-16]
+42: sidelink=914, port=6, extra=-5, int=1
+  LaTeX: {22313\overset{\textcolor{red}{5}}{1}}
+  Eigenvalues: [-5.26559, -4.11478, -3.54306, -2.56157, -0.957132, -0.557879, -3.01442e-16]
+43: sidelink=915, port=1, extra=-1, int=1
+  LaTeX: {\overset{\textcolor{red}{1}}{3}131}
+  Eigenvalues: [-4, -3.41421, -1, -0.585786, -3.80004e-17]
+44: sidelink=915, port=4, extra=-3, int=1
+  LaTeX: {313\overset{\textcolor{red}{3}}{1}}
+  Eigenvalues: [-4, -3.41421, -3, -0.585786, -1.35566e-16]
+45: sidelink=99910, port=1, extra=-2, int=1
+  LaTeX: {\overset{\textcolor{red}{2}}{1}\overset{1}{5}131}
+  Eigenvalues: [-5.67525, -3.68911, -2.5461, -1, -0.774768, -0.314767, 4.7459e-16]
+46: sidelink=99910, port=3, extra=-1, int=1
+  LaTeX: {1\underset{\textcolor{red}{1}}{\overset{1}{5}}131}
+  Eigenvalues: [-5.8434, -3.69323, -1, -1, -1, -0.46337, -9.21228e-17]
+47: sidelink=99910, port=5, extra=-2, int=1
+  LaTeX: {1\overset{1}{5}1\overset{\textcolor{red}{2}}{3}1}
+  Eigenvalues: [-5.66628, -4.07617, -1.73285, -1, -1, -0.524695, 1.98667e-16]
+48: sidelink=99910, port=6, extra=-3, int=1
+  LaTeX: {1\overset{1}{5}13\overset{\textcolor{red}{3}}{1}}
+  Eigenvalues: [-5.66397, -3.87201, -3.15778, -1, -0.879239, -0.426999, -7.32125e-16]
+49: sidelink=99920, port=1, extra=-2, int=1
+  LaTeX: {\overset{\textcolor{red}{2}}{1}\overset{1}{5}1321}
+  Eigenvalues: [-5.67585, -3.92167, -2.55088, -2.18031, -0.882022, -0.560529, -0.228739, -3.53233e-16]
+50: sidelink=99920, port=3, extra=-1, int=1
+  LaTeX: {1\underset{\textcolor{red}{1}}{\overset{1}{5}}1321}
+  Eigenvalues: [-5.84383, -3.92544, -2.18969, -1, -1, -0.748441, -0.292595, 6.99984e-17]
+51: sidelink=99930, port=1, extra=-2, int=1
+  LaTeX: {\overset{\textcolor{red}{2}}{1}\overset{1}{5}13221}
+  Eigenvalues: [-5.67591, -3.99664, -2.90013, -2.54407, -1.3928, -0.860898, -0.470791, -0.158762, 7.93414e-16]
+52: sidelink=99930, port=3, extra=-1, int=1
+  LaTeX: {1\underset{\textcolor{red}{1}}{\overset{1}{5}}13221}
+  Eigenvalues: [-5.84387, -4, -2.89942, -1.40124, -1, -1, -0.66565, -0.189824, 9.32701e-16]
+53: sidelink=99930, port=8, extra=-5, int=1
+  LaTeX: {1\overset{1}{5}1322\overset{\textcolor{red}{5}}{1}}
+  Eigenvalues: [-5.6645, -5.25572, -3.98759, -2.84222, -1.32526, -1, -0.715213, -0.209497, 2.5938e-16]
+54: sidelink=994, port=3, extra=-3, int=1
+  LaTeX: {31\overset{\overset{\textcolor{red}{3}}{1}}{5}131}
+  Eigenvalues: [-5.69544, -3.69881, -3.41421, -3.29431, -0.945779, -0.585786, -0.365651, 7.20656e-17]
+55: sidelink=995, port=3, extra=-3, int=1
+  LaTeX: {31\overset{\overset{\textcolor{red}{3}}{1}}{5}1321}
+  Eigenvalues: [-5.69601, -3.92616, -3.41421, -3.30216, -2.18179, -0.64287, -0.585786, -0.251016, 5.02729e-16]
+56: sidelink=995, port=8, extra=-5, int=1
+  LaTeX: {31\overset{1}{5}132\overset{\textcolor{red}{5}}{1}}
+  Eigenvalues: [-5.6805, -5.25654, -3.90317, -3.35843, -2.09335, -0.893069, -0.60131, -0.21363, 3.21916e-16]
+57: sidelink=996, port=3, extra=-3, int=1
+  LaTeX: {31\overset{\overset{\textcolor{red}{3}}{1}}{5}13221}
+  Eigenvalues: [-5.69606, -4, -3.41421, -3.30671, -2.89189, -1.38907, -0.585786, -0.547196, -0.169075, 3.72463e-16]
+58: sidelink=9910, port=8, extra=-5, int=1
+  LaTeX: {231\overset{1}{5}13\overset{\textcolor{red}{5}}{1}}
+  Eigenvalues: [-5.68256, -5.26335, -3.84756, -3.61438, -1.62186, -0.943539, -0.725904, -0.300841, -1.83379e-16]
+59: sidelink=9914, port=1, extra=-2, int=1
+  LaTeX: {\overset{\textcolor{red}{2}}{1}512321}
+  Eigenvalues: [-5.4796, -4.10323, -2.61803, -2.49644, -1.68862, -0.381966, -0.23211, 1.36568e-16]
+60: sidelink=9914, port=2, extra=-1, int=1
+  LaTeX: {1\overset{\textcolor{red}{1}}{5}12321}
+  Eigenvalues: [-5.65914, -4.10485, -2.58511, -1.71127, -1, -0.659128, -0.280504, 4.50248e-16]
+61: sidelink=919, port=1, extra=-1, int=1
+  LaTeX: {\overset{\textcolor{red}{1}}{3}21513221}
+  Eigenvalues: [-5.48858, -4, -3.93093, -2.89528, -2.13178, -1.37999, -0.639023, -0.409702, -0.12471, 2.57698e-17]
+62: sidelink=923, port=1, extra=-1, int=1
+  LaTeX: {\overset{\textcolor{red}{1}}{2}321513221}
+  Eigenvalues: [-5.48867, -4.1067, -3.98698, -2.89659, -2.57518, -1.69884, -1.37608, -0.463652, -0.287724, -0.119585, 2.38396e-16]
+63: sidelink=926, port=1, extra=-1, int=1
+  LaTeX: {\overset{\textcolor{red}{1}}{3}2151321}
+  Eigenvalues: [-5.48849, -3.9563, -3.89856, -2.20906, -2.10144, -0.661739, -0.51151, -0.172909, 8.28269e-16]
+64: sidelink=926, port=8, extra=-5, int=1
+  LaTeX: {3215132\overset{\textcolor{red}{5}}{1}}
+  Eigenvalues: [-5.48849, -5.25635, -3.89856, -3.70533, -2.10144, -1.90345, -0.51151, -0.134871, -1.63529e-16]
+65: sidelink=930, port=1, extra=-1, int=1
+  LaTeX: {\overset{\textcolor{red}{1}}{2}32151321}
+  Eigenvalues: [-5.48858, -4.10555, -3.91217, -2.57964, -2.17952, -1.69181, -0.569364, -0.31248, -0.16087, -3.14281e-16]
+66: sidelink=933, port=1, extra=-1, int=1
+  LaTeX: {\overset{\textcolor{red}{1}}{3}1512321}
+  Eigenvalues: [-5.48767, -4.10431, -3.6794, -2.57672, -1.69712, -0.906583, -0.345673, -0.202521, 5.86575e-17]
+67: sidelink=933, port=8, extra=-5, int=1
+  LaTeX: {3151232\overset{\textcolor{red}{5}}{1}}
+  Eigenvalues: [-5.48559, -5.25691, -4.08829, -3.35444, -2.52421, -1.63623, -0.475274, -0.179054, 2.12105e-16]
+68: sidelink=935, port=1, extra=-1, int=1
+  LaTeX: {\overset{\textcolor{red}{1}}{3}215131}
+  Eigenvalues: [-5.48758, -3.94335, -3.67726, -2.13226, -0.916252, -0.612102, -0.231192, 1.68244e-16]
+69: sidelink=939, port=8, extra=-5, int=1
+  LaTeX: {2321513\overset{\textcolor{red}{5}}{1}}
+  Eigenvalues: [-5.48978, -5.26174, -4.04958, -3.61428, -2.33295, -1.27581, -0.777599, -0.198261, -4.29741e-16]
+70: sidelink=941, port=1, extra=-2, int=1
+  LaTeX: {\overset{\textcolor{red}{2}}{1}51231}
+  Eigenvalues: [-5.4795, -3.9408, -2.54798, -2.11513, -0.630301, -0.286295, -5.71831e-16]
+71: sidelink=941, port=2, extra=-1, int=1
+  LaTeX: {1\overset{\textcolor{red}{1}}{5}1231}
+  Eigenvalues: [-5.65908, -3.94276, -2.14977, -1, -0.74402, -0.50437, 5.7028e-16]
+72: sidelink=941, port=5, extra=-2, int=1
+  LaTeX: {1512\overset{\textcolor{red}{2}}{3}1}
+  Eigenvalues: [-5.46617, -4.24952, -2.36153, -1.59656, -0.832407, -0.493817, 4.10378e-16]
+73: sidelink=941, port=6, extra=-3, int=1
+  LaTeX: {15123\overset{\textcolor{red}{3}}{1}}
+  Eigenvalues: [-5.46581, -4.04199, -3.2835, -2.0559, -0.815817, -0.336978, -3.10918e-16]
+74: sidelink=942, port=1, extra=-1, int=1
+  LaTeX: {\overset{\textcolor{red}{1}}{5}12231}
+  Eigenvalues: [-5.46515, -4.02033, -2.86821, -1.37133, -0.794115, -0.480852, -3.46175e-16]
+75: sidelink=943, port=1, extra=-2, int=1
+  LaTeX: {\overset{\textcolor{red}{2}}{2}15131}
+  Eigenvalues: [-5.48678, -3.68368, -3.20129, -1.48746, -0.897752, -0.24305, -3.34556e-16]
+76: sidelink=943, port=5, extra=-2, int=1
+  LaTeX: {2151\overset{\textcolor{red}{2}}{3}1}
+  Eigenvalues: [-5.48898, -4.06997, -2.53517, -1.72545, -0.910787, -0.269652, 9.17774e-16]
+77: sidelink=943, port=6, extra=-3, int=1
+  LaTeX: {21513\overset{\textcolor{red}{3}}{1}}
+  Eigenvalues: [-5.48572, -3.86788, -3.15684, -2.5304, -0.722258, -0.236895, -3.68628e-16]
+78: sidelink=944, port=1, extra=-2, int=1
+  LaTeX: {\overset{\textcolor{red}{2}}{2}151321}
+  Eigenvalues: [-5.48769, -3.91609, -3.20415, -2.18111, -1.47935, -0.552342, -0.179272, 3.58117e-16]
+79: sidelink=945, port=1, extra=-2, int=1
+  LaTeX: {\overset{\textcolor{red}{2}}{2}1513221}
+  Eigenvalues: [-5.48778, -3.99161, -3.2066, -2.89173, -1.50081, -1.36036, -0.433027, -0.128081, 1.17179e-15]
+80: sidelink=945, port=8, extra=-5, int=1
+  LaTeX: {2151322\overset{\textcolor{red}{5}}{1}}
+  Eigenvalues: [-5.48651, -5.2557, -3.98291, -2.84399, -2.52827, -1.306, -0.453485, -0.143123, -4.98038e-16]
+81: sidelink=9915, port=1, extra=-2, int=1
+  LaTeX: {\overset{\textcolor{red}{2}}{1}5131513221}
+  Eigenvalues: [-5.51126, -5.46781, -3.9949, -3.62461, -2.89263, -2.53165, -1.3866, -0.829263, -0.420824, -0.241278, -0.0991773, -3.17543e-16]
+82: sidelink=9915, port=2, extra=-1, int=1
+  LaTeX: {1\overset{\textcolor{red}{1}}{5}131513221}
+  Eigenvalues: [-5.66569, -5.49188, -3.995, -3.62986, -2.89262, -1.38696, -1, -0.937051, -0.553989, -0.340771, -0.106173, 2.8053e-16]
+83: sidelink=9916, port=1, extra=-2, int=1
+  LaTeX: {\overset{\textcolor{red}{2}}{1}513151321}
+  Eigenvalues: [-5.51121, -5.46777, -3.92125, -3.62134, -2.5317, -2.1797, -0.846627, -0.522613, -0.270348, -0.127452, -5.20536e-16]
+84: sidelink=9916, port=2, extra=-1, int=1
+  LaTeX: {1\overset{\textcolor{red}{1}}{5}13151321}
+  Eigenvalues: [-5.66569, -5.49179, -3.92142, -3.62652, -2.17977, -1, -0.946173, -0.605856, -0.421024, -0.141761, 1.35053e-16]
+85: sidelink=9916, port=10, extra=-5, int=1
+  LaTeX: {151315132\overset{\textcolor{red}{5}}{1}}
+  Eigenvalues: [-5.50709, -5.45852, -5.25636, -3.90123, -3.61784, -2.08841, -0.956311, -0.685234, -0.427944, -0.101065, -2.47404e-16]
+86: sidelink=9917, port=1, extra=-2, int=1
+  LaTeX: {\overset{\textcolor{red}{2}}{1}51315131}
+  Eigenvalues: [-5.5107, -5.46738, -3.71257, -3.59472, -2.53166, -0.967873, -0.756448, -0.304343, -0.154303, -5.0215e-17]
+87: sidelink=9917, port=2, extra=-1, int=1
+  LaTeX: {1\overset{\textcolor{red}{1}}{5}1315131}
+  Eigenvalues: [-5.66568, -5.49091, -3.71423, -3.59841, -1, -1, -0.852024, -0.497012, -0.181742, 2.47825e-16]
+88: sidelink=946, port=1, extra=-1, int=1
+  LaTeX: {\overset{\textcolor{red}{1}}{5}1231513221}
+  Eigenvalues: [-5.4968, -5.46418, -4.0045, -3.88317, -2.89376, -2.1077, -1.38329, -0.823969, -0.55588, -0.294601, -0.0921544, 5.66107e-16]
+89: sidelink=948, port=1, extra=-1, int=1
+  LaTeX: {\overset{\textcolor{red}{1}}{2}315131513221}
+  Eigenvalues: [-5.51502, -5.47293, -3.9953, -3.92057, -3.61485, -2.89259, -2.17974, -1.38665, -0.851034, -0.535623, -0.377507, -0.167783, -0.0904006, 5.06386e-16]
+90: sidelink=949, port=1, extra=-1, int=1
+  LaTeX: {\overset{\textcolor{red}{1}}{2}2315131513221}
+  Eigenvalues: [-5.51506, -5.47298, -4, -3.98964, -3.61803, -2.89441, -2.89077, -1.39124, -1.38197, -0.834647, -0.456885, -0.335961, -0.137287, -0.081118, 9.47024e-17]
+91: sidelink=950, port=1, extra=-1, int=1
+  LaTeX: {\overset{\textcolor{red}{1}}{3}15131513221}
+  Eigenvalues: [-5.5146, -5.47245, -3.99501, -3.71035, -3.59007, -2.89258, -1.38673, -0.968121, -0.763891, -0.404537, -0.205889, -0.0957683, -4.00363e-16]
+92: sidelink=951, port=1, extra=-1, int=1
+  LaTeX: {\overset{\textcolor{red}{1}}{5}123151321}
+  Eigenvalues: [-5.49671, -5.46418, -3.94904, -3.86215, -2.19026, -2.09668, -0.825961, -0.62492, -0.370928, -0.119177, 4.68396e-16]
+93: sidelink=951, port=10, extra=-5, int=1
+  LaTeX: {512315132\overset{\textcolor{red}{5}}{1}}
+  Eigenvalues: [-5.49563, -5.25676, -5.25598, -3.93636, -3.85023, -2.1188, -2.05724, -0.61375, -0.340919, -0.0743249, -2.6431e-16]
+94: sidelink=953, port=1, extra=-1, int=1
+  LaTeX: {\overset{\textcolor{red}{1}}{2}31513151321}
+  Eigenvalues: [-5.51497, -5.47288, -3.92848, -3.91357, -3.61173, -2.18188, -2.17759, -0.865715, -0.572438, -0.458015, -0.19479, -0.107933, 6.0029e-16]
+95: sidelink=954, port=1, extra=-1, int=1
+  LaTeX: {\overset{\textcolor{red}{1}}{3}1513151321}
+  Eigenvalues: [-5.51456, -5.4724, -3.9215, -3.70914, -3.58784, -2.17974, -0.971701, -0.78151, -0.509293, -0.232407, -0.119913, 4.13823e-16]
+96: sidelink=955, port=1, extra=-1, int=1
+  LaTeX: {\overset{\textcolor{red}{1}}{5}12315131}
+  Eigenvalues: [-5.49587, -5.46413, -3.90683, -3.66948, -2.10785, -0.931572, -0.81571, -0.460561, -0.147989, 7.35112e-16]
+97: sidelink=957, port=1, extra=-1, int=1
+  LaTeX: {\overset{\textcolor{red}{1}}{3}151315131}
+  Eigenvalues: [-5.51414, -5.47193, -3.73205, -3.67912, -3.57199, -1, -0.91387, -0.708783, -0.267949, -0.140163, 2.29032e-16]
+98: sidelink=957, port=10, extra=-5, int=1
+  LaTeX: {315131513\overset{\textcolor{red}{5}}{1}}
+  Eigenvalues: [-5.51414, -5.47193, -5.2618, -3.67912, -3.57199, -3.33988, -0.91387, -0.708783, -0.398321, -0.140163, 1.01039e-16]
+99: noble=2132, port=1, extra=-3, int=1
+  LaTeX: {\overset{\textcolor{red}{3}}{2}132}
+  Eigenvalues: [-4, -3.61803, -2, -1.38197, -9.53336e-16]
+100: noble=1{1,{1,5}}1, port=1, extra=-2, int=1
+  LaTeX: {\overset{\textcolor{red}{2}}{1}\overset{1}{5}11}
+  Eigenvalues: [-5.83847, -2.55919, -1, -1, -0.602338, 6.34029e-16]
+101: noble=1{1,{1,5}}1, port=3, extra=-1, int=1
+  LaTeX: {1\underset{\textcolor{red}{1}}{\overset{1}{5}}11}
+  Eigenvalues: [-6, -1, -1, -1, -1, -1.50672e-16]
+102: noble=151{1,3}2, port=6, extra=-2, int=1
+  LaTeX: {151\overset{1}{3}\overset{\textcolor{red}{2}}{2}}
+  Eigenvalues: [-5.47593, -4.15644, -2.7006, -1, -1, -0.667028, 8.31919e-16]
+103: noble=1{1,5}12, port=1, extra=-2, int=1
+  LaTeX: {\overset{\textcolor{red}{2}}{1}\overset{1}{5}12}
+  Eigenvalues: [-5.66908, -2.61803, -2.47602, -0.854897, -0.381966, 6.96408e-16]
+104: noble=1{1,5}12, port=5, extra=-2, int=1
+  LaTeX: {1\overset{1}{5}1\overset{\textcolor{red}{2}}{2}}
+  Eigenvalues: [-5.65852, -3.21209, -1.50997, -1, -0.619428, 1.23104e-16]
+105: noble=31{1,5}12, port=3, extra=-3, int=1
+  LaTeX: {31\overset{\overset{\textcolor{red}{3}}{1}}{5}12}
+  Eigenvalues: [-5.68953, -3.41421, -3.31505, -2.53536, -0.585786, -0.460063, -8.47954e-17]
+106: noble=31{1,5}12, port=6, extra=-3, int=1
+  LaTeX: {31\overset{1}{5}1\overset{\textcolor{red}{3}}{2}}
+  Eigenvalues: [-5.67511, -3.71601, -3.35993, -1.93361, -0.871444, -0.443902, -6.84947e-17]
+107: noble=31{1,5}13, port=4, extra=-1, int=1
+  LaTeX: {31\underset{\textcolor{red}{1}}{\overset{1}{5}}13}
+  Eigenvalues: [-5.85577, -3.41421, -3.32164, -1, -0.82259, -0.585786, 3.05152e-16]
+108: noble=13215132, port=1, extra=-5, int=1
+  LaTeX: {\overset{\textcolor{red}{5}}{1}3215132}
+  Eigenvalues: [-5.48849, -5.26624, -3.89856, -3.82148, -2.10144, -1.60213, -0.51151, -0.310148, 1.82763e-16]
+109: noble=22215, port=5, extra=-1, int=1
+  LaTeX: {2221\overset{\textcolor{red}{1}}{5}}
+  Eigenvalues: [-5.46506, -3.50955, -2.29998, -1, -0.725401, 3.87184e-16]
+110: noble=231315, port=6, extra=-1, int=1
+  LaTeX: {23131\overset{\textcolor{red}{1}}{5}}
+  Eigenvalues: [-5.47221, -4.04941, -3.47177, -1.59114, -0.895445, -0.520023, 3.0291e-16]
+111: noble=215123, port=1, extra=-3, int=1
+  LaTeX: {\overset{\textcolor{red}{3}}{2}15123}
+  Eigenvalues: [-5.48119, -3.73205, -3.68889, -2, -1.82991, -0.267949, 7.46504e-16]
+112: noble=221513, port=1, extra=-3, int=1
+  LaTeX: {\overset{\textcolor{red}{3}}{2}21513}
+  Eigenvalues: [-5.48485, -3.83901, -3.35537, -2.7119, -1.17272, -0.436147, 1.97636e-16]
+113: noble=21512, port=1, extra=-2, int=1
+  LaTeX: {\overset{\textcolor{red}{2}}{2}1512}
+  Eigenvalues: [-5.47867, -3.20994, -2.5328, -1.47396, -0.30463, 4.24049e-16]
+114: noble=21513215, port=8, extra=-1, int=1
+  LaTeX: {2151321\overset{\textcolor{red}{1}}{5}}
+  Eigenvalues: [-5.48849, -5.46357, -3.89856, -2.53787, -2.10144, -0.823381, -0.51151, -0.175179, 2.49007e-18]
+115: noble=31512315, port=8, extra=-1, int=1
+  LaTeX: {3151231\overset{\textcolor{red}{1}}{5}}
+  Eigenvalues: [-5.48849, -5.46974, -3.89856, -3.3527, -2.10144, -0.860825, -0.51151, -0.316733, 2.33547e-16]
+116: noble=32151315, port=8, extra=-1, int=1
+  LaTeX: {3215131\overset{\textcolor{red}{1}}{5}}
+  Eigenvalues: [-5.50222, -5.45619, -3.72212, -3.61469, -1.91929, -0.946556, -0.647372, -0.191563, 3.00647e-17]
+117: noble=1{1,5}13151, port=1, extra=-3, int=1
+  LaTeX: {\overset{\textcolor{red}{3}}{1}\overset{1}{5}13151}
+  Eigenvalues: [-5.68133, -5.46974, -3.64207, -3.3527, -1, -0.860825, -0.676596, -0.316733, 3.26309e-16]
+118: noble=1{1,5}13151, port=7, extra=-1, int=1
+  LaTeX: {1\overset{1}{5}131\overset{\textcolor{red}{1}}{5}1}
+  Eigenvalues: [-5.68133, -5.64575, -3.64207, -1, -1, -1, -0.676596, -0.354249, 3.39241e-16]
+119: noble=1{1,5}13151, port=8, extra=-2, int=1
+  LaTeX: {1\overset{1}{5}1315\overset{\textcolor{red}{2}}{1}}
+  Eigenvalues: [-5.66562, -5.48299, -3.63669, -2.53176, -1, -0.935779, -0.527663, -0.219502, 6.66399e-16]
+120: noble=15132151, port=2, extra=-1, int=1
+  LaTeX: {1\overset{\textcolor{red}{1}}{5}132151}
+  Eigenvalues: [-5.66459, -5.46554, -3.90376, -2.11468, -1, -0.847623, -0.733035, -0.270777, 3.99986e-16]
+121: noble=21513151, port=8, extra=-2, int=1
+  LaTeX: {2151315\overset{\textcolor{red}{2}}{1}}
+  Eigenvalues: [-5.50653, -5.46357, -3.63135, -2.53787, -2.52548, -0.823381, -0.336634, -0.175179, 4.81923e-16]
+122: noble=1513151315, port=10, extra=-1, int=1
+  LaTeX: {151315131\overset{\textcolor{red}{1}}{5}}
+  Eigenvalues: [-5.51414, -5.47193, -5.44949, -3.67912, -3.57199, -1, -0.91387, -0.708783, -0.55051, -0.140163, -3.08284e-17]
+123: noble=51232151, port=1, extra=-1, int=1
+  LaTeX: {\overset{\textcolor{red}{1}}{5}1232151}
+  Eigenvalues: [-5.46819, -5.46357, -4.09044, -2.53787, -1.66062, -0.823381, -0.780756, -0.175179, 1.70621e-16]

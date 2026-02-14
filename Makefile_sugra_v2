@@ -1,0 +1,105 @@
+# Makefile for sugra_generator_v2
+# 6D SUGRA base classification with E8 gluing rules
+
+CXX = g++
+CXXFLAGS = -std=c++17 -O2 -Wall -Wextra
+LDFLAGS = -pthread
+
+# Eigen path - detect OS and set appropriate path
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Darwin)
+    # macOS - Homebrew paths
+    ifeq ($(shell test -d /opt/homebrew/include/eigen3 && echo yes),yes)
+        EIGEN_PATH ?= /opt/homebrew/include/eigen3
+    else
+        EIGEN_PATH ?= /usr/local/include/eigen3
+    endif
+else
+    # Linux
+    EIGEN_PATH ?= /usr/include/eigen3
+endif
+
+INCLUDES = -I. -I$(EIGEN_PATH)
+
+# Source files
+MAIN_SRC = sugra_generator_v2.cpp
+TENSOR_SRC = Tensor.C
+TOPO_LINE_SRC = TopoLineCompact_enhanced.cpp
+TOPO_ENH_SRC = Topology_enhanced.cpp
+
+# Header dependencies
+HEADERS = \
+    anomaly_tables.h \
+    Topology_enhanced.h \
+    TopologyDB_enhanced.hpp \
+    TopoLineCompact_enhanced.hpp \
+    Theory_enhanced.h \
+    Tensor.h
+
+# Output binary
+TARGET = sugra_v2
+
+# Object files
+OBJS = sugra_generator_v2.o Tensor.o TopoLineCompact_enhanced.o Topology_enhanced.o
+
+#==============================================================================
+# Build rules
+#==============================================================================
+
+all: $(TARGET)
+
+$(TARGET): $(OBJS)
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $@ $(OBJS)
+
+sugra_generator_v2.o: $(MAIN_SRC) $(HEADERS)
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+
+Tensor.o: $(TENSOR_SRC) Tensor.h
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+
+TopoLineCompact_enhanced.o: $(TOPO_LINE_SRC) TopoLineCompact_enhanced.hpp Topology_enhanced.h
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+
+Topology_enhanced.o: $(TOPO_ENH_SRC) Topology_enhanced.h
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+
+#==============================================================================
+# Utility targets
+#==============================================================================
+
+clean:
+	rm -f $(OBJS) $(TARGET)
+
+rebuild: clean all
+
+# Debug build
+debug: CXXFLAGS = -std=c++17 -g -O0 -Wall -Wextra -DDEBUG
+debug: clean all
+
+# Release build with more optimization
+release: CXXFLAGS = -std=c++17 -O3 -march=native -DNDEBUG
+release: clean all
+
+# Check Eigen installation
+check-eigen:
+	@echo "Checking Eigen at $(EIGEN_PATH)..."
+	@test -f $(EIGEN_PATH)/Eigen/Dense && echo "Eigen found!" || echo "Eigen NOT found. Please set EIGEN_PATH."
+
+# Show help
+help:
+	@echo "SUGRA Generator v2 - Build Targets:"
+	@echo ""
+	@echo "  make          - Build with default settings (O2)"
+	@echo "  make debug    - Build with debug symbols"
+	@echo "  make release  - Build with max optimization"
+	@echo "  make clean    - Remove build artifacts"
+	@echo "  make rebuild  - Clean and rebuild"
+	@echo ""
+	@echo "Usage after build:"
+	@echo "  ./sugra_v2 -i input.txt -o output/ --mode single"
+	@echo "  ./sugra_v2 --help"
+	@echo ""
+	@echo "If Eigen is not found, set EIGEN_PATH:"
+	@echo "  make EIGEN_PATH=/path/to/eigen"
+
+.PHONY: all clean rebuild debug release check-eigen help

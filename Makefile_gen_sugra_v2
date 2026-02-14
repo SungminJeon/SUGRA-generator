@@ -1,0 +1,40 @@
+# Makefile for gen_sugra_v2 (node-aware LaTeX rendering)
+#
+# Usage:
+#   make -f Makefile_gen_sugra_v2
+#   ./gen_sugra_v2 unified.cat 20        # T_LST in [0, 20]
+#   ./gen_sugra_v2 unified.cat 50 21     # T_LST in [21, 50]
+#
+# Output files (in working directory):
+#   sugra_unimodular[_suffix].tex        |det|=1 bases
+#   sugra_nonuni_ext3[_suffix].tex       ext=-3 non-unimodular
+#   sugra_nonuni_ext24[_suffix].tex      ext=-2,-4 non-unimodular
+#   sugra_nonuni_ext_rest[_suffix].tex   ext=-5,-6,-7,-8,-12
+#
+# v2 changes vs v1:
+#   - Nk nodes rendered as gauge algebra (e.g. \mathfrak{e}_8)
+#   - Interior links compressed to \overset{n,m}{\otimes}
+#   - NN entries unchanged (no nodes)
+
+CXX = g++
+
+# Auto-detect Eigen path
+EIGEN_PATH := $(shell \
+  if [ -d /usr/include/eigen3 ]; then echo /usr/include/eigen3; \
+  elif [ -d /usr/local/include/eigen3 ]; then echo /usr/local/include/eigen3; \
+  elif [ -d /opt/homebrew/include/eigen3 ]; then echo /opt/homebrew/include/eigen3; \
+  elif [ -d /opt/homebrew/opt/eigen/include/eigen3 ]; then echo /opt/homebrew/opt/eigen/include/eigen3; \
+  else pkg-config --cflags eigen3 2>/dev/null | sed 's/-I//'; fi)
+
+CXXFLAGS = -std=c++17 -O2 -I$(EIGEN_PATH) -I.
+
+SRCS = gen_sugra_v2.cpp Tensor.C TopoLineCompact_enhanced.cpp Topology_enhanced.cpp
+TARGET = gen_sugra_v2
+
+$(TARGET): $(SRCS) sugra_generator.h Tensor.h Topology_enhanced.h Theory_enhanced.h anomaly_tables.h theory_sugra.h
+	$(CXX) $(CXXFLAGS) -o $(TARGET) $(SRCS)
+
+clean:
+	rm -f $(TARGET)
+
+.PHONY: clean

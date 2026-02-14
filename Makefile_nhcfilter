@@ -1,0 +1,22 @@
+# Makefile_nhcfilter
+# Usage: make -f Makefile_nhcfilter
+#
+# Requires: Eigen3 (brew install eigen on macOS)
+# Must be run from the sugra_generator directory containing:
+#   Tensor.h, Tensor.C, Theory_enhanced.h, anomaly_tables.h,
+#   TopoLineCompact_enhanced.hpp/cpp, Topology_enhanced.h/cpp
+
+CXX = g++
+CXXFLAGS = -std=c++17 -O2
+EIGEN_INC = $(shell brew --prefix eigen 2>/dev/null || echo /usr/include)/include/eigen3
+
+TARGET = nhc_filter
+SRCS = nhc_filter.cpp Tensor.C TopoLineCompact_enhanced.cpp Topology_enhanced.cpp
+
+$(TARGET): $(SRCS)
+	$(CXX) $(CXXFLAGS) -o $@ $^ -I$(EIGEN_INC) -I.
+
+clean:
+	rm -f $(TARGET)
+
+.PHONY: clean

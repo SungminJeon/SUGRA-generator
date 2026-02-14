@@ -1,0 +1,56 @@
+# Makefile for sugra_generator
+# Usage: make -f Makefile_sugra
+
+CXX = g++
+CXXFLAGS = -std=c++17 -O2 -Wall
+
+# Eigen path detection (macOS Homebrew vs Linux)
+UNAME := $(shell uname)
+ifeq ($(UNAME), Darwin)
+    # macOS - check common Homebrew locations
+    ifneq ($(wildcard /opt/homebrew/include/eigen3),)
+        EIGEN_PATH = /opt/homebrew/include/eigen3
+    else ifneq ($(wildcard /usr/local/include/eigen3),)
+        EIGEN_PATH = /usr/local/include/eigen3
+    else
+        EIGEN_PATH = /opt/homebrew/include/eigen3
+    endif
+else
+    # Linux
+    EIGEN_PATH = /usr/include/eigen3
+endif
+
+INCLUDES = -I. -I$(EIGEN_PATH)
+
+TARGET = sugra_generator
+
+.PHONY: all clean run help
+
+all: $(TARGET)
+
+$(TARGET): sugra_generator.cpp Tensor.C Topology_enhanced.cpp TopoLineCompact_enhanced.cpp Tensor.h Theory_enhanced.h Topology_enhanced.h TopoLineCompact_enhanced.hpp
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -o $(TARGET) sugra_generator.cpp Tensor.C Topology_enhanced.cpp TopoLineCompact_enhanced.cpp
+
+clean:
+	rm -f $(TARGET) *.o
+
+help:
+	@echo "SUGRA Generator"
+	@echo "  - Target curve: -1 (fixed)"
+	@echo "  - External curves: -4 to -12 (gauge curves)"
+	@echo ""
+	@echo "Usage: make -f Makefile_sugra [target]"
+	@echo ""
+	@echo "Targets:"
+	@echo "  all     - Build sugra_generator (default)"
+	@echo "  clean   - Remove built files"
+	@echo "  help    - Show this help"
+	@echo ""
+	@echo "Run examples:"
+	@echo "  ./sugra_generator -i input.txt -o output_dir --mode classify"
+	@echo "  ./sugra_generator -i input.txt -o output_dir --mode single"
+	@echo "  ./sugra_generator -i input.txt -o output_dir --mode exhaustive --max-attach 2"
+
+# Debug build
+debug: CXXFLAGS += -g -DDEBUG
+debug: $(TARGET)

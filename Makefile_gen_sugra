@@ -1,0 +1,61 @@
+# Makefile for gen_sugra
+# SUGRA base generator
+#
+# Usage:
+#   make -f Makefile_gen_sugra
+#   ./gen_sugra unified.cat 20        # T_LST in [0, 20]
+#   ./gen_sugra unified.cat 50 21     # T_LST in [21, 50]
+
+CXX = g++
+CXXFLAGS = -std=c++17 -O2 -Wall -Wextra
+
+# Eigen path - adjust as needed
+# macOS (Homebrew): /opt/homebrew/include/eigen3 or /usr/local/include/eigen3
+# Linux: /usr/include/eigen3
+EIGEN_PATH ?= /usr/include/eigen3
+
+# If using Homebrew on Apple Silicon
+ifeq ($(shell uname -s),Darwin)
+    ifeq ($(shell uname -m),arm64)
+        EIGEN_PATH = /opt/homebrew/include/eigen3
+    else
+        EIGEN_PATH = /usr/local/include/eigen3
+    endif
+endif
+
+INCLUDES = -I$(EIGEN_PATH) -I.
+
+# Source files
+TARGET = gen_sugra
+
+.PHONY: all clean run help
+
+all: $(TARGET)
+
+$(TARGET): gen_sugra.o Tensor.o TopoLineCompact_enhanced.o Topology_enhanced.o
+	$(CXX) $(CXXFLAGS) -o $@ $^
+
+gen_sugra.o: gen_sugra.cpp sugra_generator.h Tensor.h Topology_enhanced.h Theory_enhanced.h anomaly_tables.h theory_sugra.h
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+
+Tensor.o: Tensor.C Tensor.h
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+
+TopoLineCompact_enhanced.o: TopoLineCompact_enhanced.cpp Topology_enhanced.h
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+
+Topology_enhanced.o: Topology_enhanced.cpp Topology_enhanced.h
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+
+clean:
+	rm -f $(TARGET) *.o *.tex *.aux *.log
+
+help:
+	@echo "Usage:"
+	@echo "  make -f Makefile_gen_sugra          - Build"
+	@echo "  ./gen_sugra unified.cat 20          - T_LST in [0, 20]"
+	@echo "  ./gen_sugra unified.cat 50 21       - T_LST in [21, 50]"
+	@echo "  make -f Makefile_gen_sugra clean     - Remove generated files"
+	@echo ""
+	@echo "Configuration:"
+	@echo "  EIGEN_PATH - Path to Eigen headers (default: auto-detected)"
