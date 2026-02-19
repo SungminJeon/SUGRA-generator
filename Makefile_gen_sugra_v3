@@ -1,0 +1,37 @@
+# Makefile for gen_sugra_v3 (sidelink-external pattern reference)
+#
+# Usage:
+#   make -f Makefile_gen_sugra_v3
+#   ./gen_sugra_v3 unified.cat 20        # T_LST in [0, 20]
+#   ./gen_sugra_v3 unified.cat 50 21     # T_LST in [21, 50]
+#
+# Output:
+#   sugra_v3_sidelink_ref[_suffix].tex
+#
+#   For each sidelink type in unimodular SUGRA bases:
+#     - Curve structure
+#     - Which position receives which external
+#     - Frequency counts
+
+CXX = g++
+
+# Auto-detect Eigen path
+EIGEN_PATH := $(shell \
+  if [ -d /usr/include/eigen3 ]; then echo /usr/include/eigen3; \
+  elif [ -d /usr/local/include/eigen3 ]; then echo /usr/local/include/eigen3; \
+  elif [ -d /opt/homebrew/include/eigen3 ]; then echo /opt/homebrew/include/eigen3; \
+  elif [ -d /opt/homebrew/opt/eigen/include/eigen3 ]; then echo /opt/homebrew/opt/eigen/include/eigen3; \
+  else pkg-config --cflags eigen3 2>/dev/null | sed 's/-I//'; fi)
+
+CXXFLAGS = -std=c++17 -O2 -I$(EIGEN_PATH) -I.
+
+SRCS = gen_sugra_v3.cpp Tensor.C TopoLineCompact_enhanced.cpp Topology_enhanced.cpp
+TARGET = gen_sugra_v3
+
+$(TARGET): $(SRCS) sugra_generator.h Tensor.h Topology_enhanced.h Theory_enhanced.h anomaly_tables.h theory_sugra.h
+	$(CXX) $(CXXFLAGS) -o $(TARGET) $(SRCS)
+
+clean:
+	rm -f $(TARGET)
+
+.PHONY: clean
