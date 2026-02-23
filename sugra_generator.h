@@ -357,6 +357,49 @@ inline NHCResult check_nhc(const Eigen::MatrixXi& IF, double cc_budget = 8.0) {
     return result;
 }
 
+// ── External -2 → -1 gauge enhancement ──
+// When an external -2 curve is attached to a -1 curve, it carries su(2)
+// gauge algebra: V=3, H=4 (4 half-hypers in fundamental).
+// This must be applied AFTER check_nhc and BEFORE compute_anomaly.
+inline void enhance_external_m2_gauge(NHCResult& nhc,
+                                       const Eigen::MatrixXi& IF,
+                                       int ext_idx, int target_si,
+                                       double cc_budget = 8.0) {
+    if (IF(ext_idx, ext_idx) != -2 || target_si != -1) return;
+    
+    // Set gauge on the external -2
+    nhc.curve_gauges[ext_idx] = GAUGE_SU2;
+    
+    // Update cluster H, V
+    for (auto& cl : nhc.clusters) {
+        for (int c : cl.curve_indices) {
+            if (c == ext_idx) {
+                cl.V += 3;
+                cl.H += 4;
+                goto done_cluster;
+            }
+        }
+    }
+    done_cluster:
+    
+    // Re-check central charge on neighboring -1 curves
+    int n = IF.rows();
+    for (int i = 0; i < n; i++) {
+        if (IF(i, i) != -1 || IF(i, ext_idx) == 0) continue;
+        double total_c = 0.0;
+        for (int j = 0; j < n; j++) {
+            if (j == i || IF(i, j) == 0 || IF(j, j) == -1) continue;
+            int k = std::abs(IF(i, j));
+            total_c += central_charge(nhc.curve_gauges[j], k);
+        }
+        if (total_c > cc_budget + 1e-9) {
+            nhc.passes = false;
+            nhc.fail_reason = "L2(ext): c.c. exceeded after su(2) enhancement";
+            return;
+        }
+    }
+}
+
 // ############################################################################
 // PART 4: SIGNATURE + DETERMINANT
 // ############################################################################
@@ -708,6 +751,11 @@ inline std::vector<SUGRAResult> generate_from_IF(
             if (!nhc.passes) continue;
         }
         
+        // External -2 → -1: su(2) gauge enhancement
+        enhance_external_m2_gauge(nhc, new_IF, new_IF.rows() - 1,
+                                  base_IF(c.target_idx, c.target_idx), config.cc_budget);
+        if (!nhc.passes) continue;
+        
         AnomalyResult anom = {0, 0, 0, 0};
         if (nhc.passes) {
             anom = compute_anomaly(new_IF, nhc);
@@ -759,6 +807,11 @@ inline std::vector<SUGRAResult> generate_from_entry(
             nhc = check_nhc(new_IF, config.cc_budget);
             if (!nhc.passes) continue;
         }
+        
+        // External -2 → -1: su(2) gauge enhancement
+        enhance_external_m2_gauge(nhc, new_IF, new_IF.rows() - 1,
+                                  base_IF(c.target_idx, c.target_idx), config.cc_budget);
+        if (!nhc.passes) continue;
         
         AnomalyResult anom = {0, 0, 0, 0};
         if (nhc.passes) {
