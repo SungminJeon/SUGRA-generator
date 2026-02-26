@@ -1,0 +1,19 @@
+CXX = g++
+EIGEN_PATH := $(shell \
+  if [ -d /usr/include/eigen3 ]; then echo /usr/include/eigen3; \
+  elif [ -d /usr/local/include/eigen3 ]; then echo /usr/local/include/eigen3; \
+  elif [ -d /opt/homebrew/include/eigen3 ]; then echo /opt/homebrew/include/eigen3; \
+  else pkg-config --cflags eigen3 2>/dev/null | sed 's/-I//'; fi)
+
+CXXFLAGS = -std=c++17 -O2 -I$(EIGEN_PATH) -I.
+
+SRCS = gen_sugra_v5.cpp Tensor.C TopoLineCompact_enhanced.cpp Topology_enhanced.cpp
+TARGET = gen_sugra_v5
+
+$(TARGET): $(SRCS) sugra_generator.h Tensor.h Topology_enhanced.h Theory_enhanced.h anomaly_tables.h theory_sugra.h
+	$(CXX) $(CXXFLAGS) -o $(TARGET) $(SRCS)
+
+clean:
+	rm -f $(TARGET)
+
+.PHONY: clean

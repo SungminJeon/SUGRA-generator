@@ -223,69 +223,107 @@ inline Eigen::MatrixXi build_b0Q_matrix(const Eigen::MatrixXi& IF) {
     return m;
 }
 
-// Compute T_max for non-unimodular bases:
-// Build b₀Q extended matrix (no blowdown), sweep b₀² = 9-T,
-// find T where det = 0 → T_max = T_det0 - 1
-struct TmaxResult {
-    int T_sugra;          // original T of the SUGRA base
-    int T_max;            // maximum T before det vanishes
-    double T_crit;        // exact T where det = 0
-    bool exact;           // true if T_crit is integer
-    Eigen::MatrixXi ext;  // extended matrix at original T
+// Compute critical T for non-unimodular bases:
+// Find T where det(extended) = 0 or changes sign.
+// At that T, compute signature and blowdown of extended matrix.
+struct CritInfo {
+    int T_sugra;
+    double T_crit;          // exact T where det(ext) = 0 (fractional)
+    int T_crit_int;         // integer T to evaluate at
+    bool exact;             // T_crit is integer?
+    int crit_npos, crit_nneg, crit_nzero;  // signature at T_crit_int
+    BlowdownResult bd_crit; // blowdown of extended matrix at T_crit_int
 };
 
-inline TmaxResult compute_Tmax(const Eigen::MatrixXi& IF) {
+inline CritInfo compute_crit(const Eigen::MatrixXi& IF) {
+    CritInfo res;
     int n = IF.rows();
-    TmaxResult res;
-    
-    // Compute sig_neg = T_SUGRA
+
     Eigen::SelfAdjointEigenSolver<Eigen::MatrixXd> es0(IF.cast<double>());
     res.T_sugra = 0;
     for (int i = 0; i < es0.eigenvalues().size(); i++)
         if (es0.eigenvalues()(i) < -1e-8) res.T_sugra++;
-    
-    // Build extended matrix with b₀·C_i, b₀² as variable
+
     Eigen::MatrixXd M = Eigen::MatrixXd::Zero(n + 1, n + 1);
     M.block(0, 0, n, n) = IF.cast<double>();
     for (int i = 0; i < n; i++) {
         M(i, n) = IF(i, i) + 2;
         M(n, i) = IF(i, i) + 2;
     }
-    
-    // det(extended) is linear in b₀²: det = A * b₀² + B
+
     M(n, n) = 0.0;
     double B = M.determinant();
     M(n, n) = 1.0;
     double A = M.determinant() - B;
-    
-    // det = 0 at b₀² = -B/A, i.e. T_crit = 9 - (-B/A) = 9 + B/A
+
     if (std::abs(A) < 1e-10) {
-        res.T_max = -1; res.T_crit = 1e9; res.exact = false;
-    } else {
-        double b0sq_crit = -B / A;
-        double T_crit = 9.0 - b0sq_crit;
-        res.T_crit = T_crit;
-        int T_crit_int = (int)std::round(T_crit);
-        res.exact = (std::abs(T_crit - T_crit_int) < 1e-6);
-        if (T_crit <= res.T_sugra) {
-            res.T_max = res.T_sugra;
-        } else if (res.exact) {
-            res.T_max = T_crit_int - 1;
-        } else {
-            res.T_max = (int)std::floor(T_crit);
-        }
+        res.T_crit = 1e9; res.exact = false; res.T_crit_int = -1;
+        res.crit_npos = res.crit_nneg = res.crit_nzero = 0;
+        return res;
     }
-    
-    // Store extended matrix at original T
+
+    double b0sq_crit = -B / A;
+    res.T_crit = 9.0 - b0sq_crit;
+    int tc = (int)std::round(res.T_crit);
+    res.exact = (std::abs(res.T_crit - tc) < 1e-6);
+    if (res.exact) res.T_crit_int = tc;
+    else res.T_crit_int = (int)std::ceil(res.T_crit - 1e-9);
+
+    // Signature at T_crit_int
+    int b0sq = 9 - res.T_crit_int;
+    M(n, n) = (double)b0sq;
+    Eigen::SelfAdjointEigenSolver<Eigen::MatrixXd> es1(M);
+    res.crit_npos = res.crit_nneg = res.crit_nzero = 0;
+    for (int i = 0; i < n + 1; i++) {
+        double ev = es1.eigenvalues()(i);
+        if (std::abs(ev) < 1e-8) res.crit_nzero++;
+        else if (ev > 0) res.crit_npos++;
+        else res.crit_nneg++;
+    }
+
+    // Blowdown extended matrix at T_crit_int
     Eigen::MatrixXi ext = Eigen::MatrixXi::Zero(n + 1, n + 1);
     ext.block(0, 0, n, n) = IF;
     for (int i = 0; i < n; i++) {
         ext(i, n) = IF(i, i) + 2;
         ext(n, i) = IF(i, i) + 2;
     }
-    ext(n, n) = 9 - res.T_sugra;
-    res.ext = ext;
-    
+    ext(n, n) = b0sq;
+
+    Eigen::MatrixXi cur = ext;
+    int bd_count = 0;
+    while (true) {
+        int nn = cur.rows();
+        int m1 = -1;
+        for (int i = 0; i < nn - 1; i++)
+            if (cur(i, i) == -1) { m1 = i; break; }
+        if (m1 < 0) break;
+        cur = blowdown_curve(cur, m1);
+        bd_count++;
+    }
+
+    int nc = cur.rows() - 1;
+    res.bd_crit.num_blowdowns = bd_count;
+    res.bd_crit.extended_IF = cur;
+    res.bd_crit.minimal_IF = (nc > 0) ? cur.block(0, 0, nc, nc) : Eigen::MatrixXi();
+    res.bd_crit.b0_sq = cur(cur.rows() - 1, cur.cols() - 1);
+    res.bd_crit.F_n = -1;
+    res.bd_crit.is_P2 = false;
+    if (nc == 1 && cur(0, 0) > 0) {
+        res.bd_crit.surface = "\\mathbb{P}^2";
+        res.bd_crit.is_P2 = true;
+    } else if (nc == 2) {
+        int a = cur(0, 0), b = cur(1, 1);
+        if (b == 0) { res.bd_crit.F_n = std::abs(a);
+            res.bd_crit.surface = "\\mathbb{F}_{" + std::to_string(res.bd_crit.F_n) + "}"; }
+        else if (a == 0) { res.bd_crit.F_n = std::abs(b);
+            res.bd_crit.surface = "\\mathbb{F}_{" + std::to_string(res.bd_crit.F_n) + "}"; }
+        else res.bd_crit.surface = "\\text{UNK}_{2}";
+    } else if (nc == 0) {
+        res.bd_crit.surface = "\\text{pt}";
+    } else {
+        res.bd_crit.surface = "\\text{UNK}_{" + std::to_string(nc) + "}";
+    }
     return res;
 }
 
@@ -653,7 +691,7 @@ int main(int argc, char** argv) {
         tex << "\\usepackage{longtable}\n";
         tex << "\\usepackage{booktabs}\n";
         tex << "\\usepackage{amsmath,amssymb}\n";
-        tex << "\\usepackage{xcolor}\n";
+        tex << "\\usepackage[dvipsnames]{xcolor}\n";
         tex << "\\usepackage{array}\n";
         tex << "\\setlength{\\parindent}{0pt}\n";
         tex << "\\setlength{\\parskip}{2pt}\n";
@@ -779,25 +817,32 @@ int main(int argc, char** argv) {
         std::cout << "Written " << uni.size() << " entries to sugra_unimodular.tex\n";
     }
     
-    // ─── Non-unimodular: split by ext type, show T_max ───
+    // ─── Non-unimodular: split by ext type, show T_crit + blowdown ───
     {
         struct NonuniEntry {
             const SUGRAResult* r;
-            TmaxResult tm;
+            CritInfo ci;
         };
         
-        // Group by ext type
+        // Group by ext type, filtering out rejected (delta_crit > 0)
         std::vector<NonuniEntry> ext3, ext24, ext_rest;
+        int n_rejected = 0;
         for (auto& r : nonuni) {
-            auto tm = compute_Tmax(r.final_IF);
-            NonuniEntry e{&r, tm};
+            auto ci = compute_crit(r.final_IF);
+            int delta = r.anomaly.H_charged - r.anomaly.V + 29 * r.anomaly.T - 273;
+            int delta_crit = delta + 29 * (ci.T_crit_int - r.anomaly.T);
+            if (delta_crit > 0) { n_rejected++; continue; }
+            NonuniEntry e{&r, ci};
             int ext_si = r.externals.empty() ? 0 : r.externals[0].ext_si;
             if (ext_si == -3) ext3.push_back(e);
             else if (ext_si == -2 || ext_si == -4) ext24.push_back(e);
             else ext_rest.push_back(e);
         }
         
-        std::cout << "Non-unimodular split: ext=-3: " << ext3.size()
+        std::cout << "Non-unimodular: " << nonuni.size() << " total, "
+                  << n_rejected << " rejected (Delta_crit>0), "
+                  << nonuni.size() - n_rejected << " pass\n";
+        std::cout << "  ext=-3: " << ext3.size()
                   << ", ext=-2/-4: " << ext24.size()
                   << ", ext=-5/-6/-7/-8/-12: " << ext_rest.size() << "\n";
         
@@ -814,35 +859,38 @@ int main(int argc, char** argv) {
             
             // Count exact vs frac
             int n_exact = 0, n_frac = 0;
-            for (auto& e : entries) { if (e.tm.exact) n_exact++; else n_frac++; }
+            for (auto& e : entries) {
+                if (e.ci.exact) n_exact++; else n_frac++;
+            }
             
             tex << "Total: " << entries.size()
                 << " bases (from " << lst_bases.size() << " distinct LST bases, "
                 << "$T_{\\text{LST}} \\in [" << T_min << ", " << T_max << "]$).\n\n"
                 << "Exact $\\det=0$: " << n_exact
-                << ", fractional $T_{\\text{crit}}$: " << n_frac << ".\n\n";
+                << ", fractional $T_{\\text{crit}}$: " << n_frac
+                << ". Filtered: $\\Delta_{\\text{crit}} \\leq 0$.\n\n";
             tex << "\\textcolor{red}{Red} = attached external curve. "
                 << "$\\scriptstyle [\\#=n]$ = intersection number.\n\n";
             
             // Statistics tables
-            std::map<int,int> T_count, Tmax_count;
+            std::map<int,int> T_count, Tcrit_count;
             std::map<int,int> intnum_exact, intnum_frac, det_exact, det_frac;
             for (auto& e : entries) {
                 T_count[e.r->anomaly.T]++;
-                Tmax_count[e.tm.T_max]++;
+                Tcrit_count[e.ci.T_crit_int]++;
                 int num = e.r->externals.empty() ? 1 : e.r->externals[0].int_num;
                 int da = std::abs(e.r->sig.det);
-                if (e.tm.exact) { intnum_exact[num]++; det_exact[da]++; }
+                if (e.ci.exact) { intnum_exact[num]++; det_exact[da]++; }
                 else { intnum_frac[num]++; det_frac[da]++; }
             }
             
-            // T and T_max tables
+            // T and T_crit tables
             tex << "\\begin{center}\n";
             tex << "\\begin{tabular}{c|c}\n\\toprule\n$T$ & Count \\\\\n\\midrule\n";
             for (auto& [T, cnt] : T_count) tex << T << " & " << cnt << " \\\\\n";
             tex << "\\bottomrule\n\\end{tabular}\n\\qquad\\qquad\n";
-            tex << "\\begin{tabular}{c|c}\n\\toprule\n$T_{\\max}$ & Count \\\\\n\\midrule\n";
-            for (auto& [T, cnt] : Tmax_count) tex << T << " & " << cnt << " \\\\\n";
+            tex << "\\begin{tabular}{c|c}\n\\toprule\n$T_{\\text{crit}}$ & Count \\\\\n\\midrule\n";
+            for (auto& [T, cnt] : Tcrit_count) tex << T << " & " << cnt << " \\\\\n";
             tex << "\\bottomrule\n\\end{tabular}\n";
             tex << "\\end{center}\n\n";
             
@@ -895,16 +943,29 @@ int main(int argc, char** argv) {
                 if (int_num > 1) tex << " $\\scriptstyle [\\#=" << int_num << "]$";
                 tex << " \\quad $\\Delta=" << delta
                     << ",\\; |\\det|=" << std::abs(r.sig.det)
-                    << ",\\; (n_+,n_-,n_0)=(" << r.sig.sig_pos << "," << r.sig.sig_neg << "," << r.sig.sig_zero << ")";
-                if (e.tm.exact) {
-                    tex << ",\\; T_{\\max}=" << e.tm.T_max
-                        << ",\\; T_{\\text{crit}}=" << e.tm.T_max + 1
-                        << "$ \\textcolor{blue}{(exact)}";
+                    << ",\\; (n_+,n_-,n_0)=(" << r.sig.sig_pos << "," << r.sig.sig_neg << "," << r.sig.sig_zero << ")$\n\n";
+                // T_crit line
+                tex << "\\hspace{1em}$T_{\\text{crit}}=";
+                if (e.ci.exact) {
+                    tex << e.ci.T_crit_int;
                 } else {
-                    tex << ",\\; T_{\\text{crit}}=" << std::fixed << std::setprecision(2) << e.tm.T_crit
-                        << ",\\; T_{\\max}=" << e.tm.T_max << "$";
+                    tex << std::fixed << std::setprecision(2) << e.ci.T_crit
+                        << " \\to " << e.ci.T_crit_int;
                 }
-                tex << "\n\n";
+                tex << ",\\; (n_+,n_-,n_0)_{\\text{crit}}=("
+                    << e.ci.crit_npos << "," << e.ci.crit_nneg << "," << e.ci.crit_nzero << ")$\n\n";
+                // Blowdowned extended matrix on its own line
+                auto& em = e.ci.bd_crit.extended_IF;
+                int sz = em.rows();
+                tex << "\\hspace{2em}$\\left(\\begin{smallmatrix}";
+                for (int i = 0; i < sz; i++) {
+                    if (i > 0) tex << " \\\\ ";
+                    for (int j = 0; j < sz; j++) {
+                        if (j > 0) tex << " & ";
+                        tex << em(i, j);
+                    }
+                }
+                tex << "\\end{smallmatrix}\\right)_{\\!b_0}$\n\n";
             }
             tex << "\\end{document}\n";
             tex.close();

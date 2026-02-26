@@ -48,6 +48,7 @@ inline const GaugeInfo GAUGE_E7  = {"e7", 133, 18, 7};
 inline const GaugeInfo GAUGE_E8  = {"e8", 248, 30, 8};
 inline const GaugeInfo GAUGE_SO16 = {"so16", 120, 14, 8};
 inline const GaugeInfo GAUGE_SU8 = {"su8", 63, 8, 7};
+inline const GaugeInfo GAUGE_SU16 = {"su16", 255, 16, 15};
 
 inline double central_charge(const GaugeInfo& g, int k) {
     if (g.dim == 0) return 0.0;
@@ -395,6 +396,71 @@ inline void enhance_external_m2_gauge(NHCResult& nhc,
         if (total_c > cc_budget + 1e-9) {
             nhc.passes = false;
             nhc.fail_reason = "L2(ext): c.c. exceeded after su(2) enhancement";
+            return;
+        }
+    }
+}
+
+// ── hat{1} gauge enhancement ──
+// hat{1} (C²=-1, b₀·C=-1) carries gauge algebra depending on target:
+//   → -1 target: su(8),  V=63,  H=36  (1 symmetric hyper)
+//   → -2 target: su(16), V=255, H=264 (1 symmetric + 8 fundamental hypers)
+// This must be applied AFTER check_nhc and BEFORE compute_anomaly.
+inline void enhance_hat1_gauge(NHCResult& nhc,
+                                const Eigen::MatrixXi& IF,
+                                int hat1_idx, int target_si,
+                                double cc_budget = 8.0) {
+    if (IF(hat1_idx, hat1_idx) != -1) return;
+    
+    GaugeInfo gauge;
+    int dV, dH;
+    if (target_si == -1) {
+        gauge = GAUGE_SU8; dV = 63; dH = 36;
+    } else if (target_si == -2) {
+        gauge = GAUGE_SU16; dV = 255; dH = 264;
+    } else {
+        return;
+    }
+    
+    nhc.curve_gauges[hat1_idx] = gauge;
+    
+    // Update cluster H, V
+    for (auto& cl : nhc.clusters) {
+        for (int c : cl.curve_indices) {
+            if (c == hat1_idx) {
+                cl.V += dV;
+                cl.H += dH;
+                goto done_hat1;
+            }
+        }
+    }
+    // hat1 is a -1 curve, not in any cluster — add a new one
+    {
+        ClusterInfo cl;
+        cl.cluster_id = (int)nhc.clusters.size();
+        cl.curve_indices = {hat1_idx};
+        cl.nhc = nullptr;
+        cl.H = dH;
+        cl.V = dV;
+        nhc.clusters.push_back(cl);
+        nhc.curve_cluster[hat1_idx] = cl.cluster_id;
+    }
+    done_hat1:
+    
+    // Re-check central charge on neighboring -1 curves
+    int n = IF.rows();
+    for (int i = 0; i < n; i++) {
+        if (i == hat1_idx || IF(i, i) != -1 || IF(i, hat1_idx) == 0) continue;
+        double total_c = 0.0;
+        for (int j = 0; j < n; j++) {
+            if (j == i || IF(i, j) == 0) continue;
+            if (IF(j, j) == -1 && j != hat1_idx) continue;
+            int k = std::abs(IF(i, j));
+            total_c += central_charge(nhc.curve_gauges[j], k);
+        }
+        if (total_c > cc_budget + 1e-9) {
+            nhc.passes = false;
+            nhc.fail_reason = "L2(hat1): c.c. exceeded after gauge enhancement";
             return;
         }
     }

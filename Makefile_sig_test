@@ -1,0 +1,31 @@
+# Makefile for sig_test
+#
+# Usage:
+#   make -f Makefile_sig_test
+#   ./sig_test unified.cat 10        # T_LST in [0, 10]
+#   ./sig_test unified.cat 20 11     # T_LST in [11, 20]
+#
+# Output:
+#   sig_test_T{min}_{max}.tex / .pdf
+
+CXX = g++
+
+EIGEN_PATH := $(shell \
+  if [ -d /usr/include/eigen3 ]; then echo /usr/include/eigen3; \
+  elif [ -d /usr/local/include/eigen3 ]; then echo /usr/local/include/eigen3; \
+  elif [ -d /opt/homebrew/include/eigen3 ]; then echo /opt/homebrew/include/eigen3; \
+  elif [ -d /opt/homebrew/opt/eigen/include/eigen3 ]; then echo /opt/homebrew/opt/eigen/include/eigen3; \
+  else pkg-config --cflags eigen3 2>/dev/null | sed 's/-I//'; fi)
+
+CXXFLAGS = -std=c++17 -O2 -I$(EIGEN_PATH) -I.
+
+SRCS = sig_test.cpp Tensor.C TopoLineCompact_enhanced.cpp Topology_enhanced.cpp
+TARGET = sig_test
+
+$(TARGET): $(SRCS) sugra_generator.h theory_sugra.h Tensor.h Topology_enhanced.h Theory_enhanced.h anomaly_tables.h
+	$(CXX) $(CXXFLAGS) -o $(TARGET) $(SRCS)
+
+clean:
+	rm -f $(TARGET) sig_test_*.tex sig_test_*.pdf sig_test_*.aux sig_test_*.log
+
+.PHONY: clean
