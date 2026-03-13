@@ -210,7 +210,7 @@ BlowdownResult blowdown_hat1(const Eigen::MatrixXi& IF, int hat1_idx) {
     res.extended_IF = cur;
     res.minimal_IF = cur.block(0, 0, n_curves, n_curves);
 
-    if (n_curves == 1 && cur(0, 0) > 0) {
+    if (n_curves == 1 && cur(0, 0) == 1) {
         res.surface = "\\mathbb{P}^2";
         res.F_n = -1;
         res.is_P2 = true;
@@ -477,38 +477,57 @@ std::string if_to_latex_hat1(const Eigen::MatrixXi& IF, int hat1_idx,
         return exits;
     };
 
+    // walk_branch: recursive walk with reversed concatenation (tip→root)
+    std::function<std::string(int)> walk_branch;
+
     std::function<std::string(int, int)> walk = [&](int cur, int from) -> std::string {
         visited[cur] = true;
 
         // Interior link compression
+        // BUT: if hat1 is connected to any curve in this block, don't compress
         if (has_blocks && bmap.is_interior_link(cur)
             && bmap.block_of(cur).end - bmap.block_of(cur).start > 1) {
-            std::string label = interior_link_label(bmap.block_of(cur).param);
-            auto exits = skip_block(cur);
-            if (exits.empty()) return label;
-            if (exits.size() == 1) return label + walk(exits[0], cur);
-            int main_child = -1;
-            std::vector<int> branch_children;
-            for (int c : exits) {
-                if (main_child < 0 && c != hat1_idx) main_child = c;
-                else branch_children.push_back(c);
+            bool hat1_touches_block = false;
+            if (hat1_idx >= 0) {
+                auto& blk = bmap.block_of(cur);
+                for (int c = blk.start; c < blk.end && !hat1_touches_block; c++)
+                    for (auto& [nb, w] : adj[c])
+                        if (nb == hat1_idx) { hat1_touches_block = true; break; }
             }
-            if (main_child < 0) {
-                main_child = exits[0];
-                branch_children.assign(exits.begin() + 1, exits.end());
+            if (!hat1_touches_block) {
+                std::string label = interior_link_label(bmap.block_of(cur).param);
+                auto exits = skip_block(cur);
+                if (exits.empty()) return label;
+                if (exits.size() == 1) return label + walk(exits[0], cur);
+                int main_child = -1;
+                std::vector<int> branch_children;
+                for (int c : exits) {
+                    if (main_child < 0 && c != hat1_idx) main_child = c;
+                    else branch_children.push_back(c);
+                }
+                if (main_child < 0) {
+                    main_child = exits[0];
+                    branch_children.assign(exits.begin() + 1, exits.end());
+                }
+                std::vector<std::string> br_strs;
+                for (int i = (int)branch_children.size() - 1; i >= 0; i--)
+                    br_strs.push_back(walk_branch(branch_children[i]));
+                std::string main_part = walk(main_child, cur);
+                if (br_strs.empty()) return label + main_part;
+                if (br_strs.size() == 1)
+                    return "\\overset{" + br_strs[0] + "}{" + label + "}" + main_part;
+                std::string under;
+                for (size_t i = 1; i < br_strs.size(); i++) {
+                    if (!under.empty()) under += ",";
+                    under += br_strs[i];
+                }
+                return "\\overset{" + br_strs[0] + "}{\\underset{" + under + "}{" + label + "}}" + main_part;
             }
-            std::string branches;
-            for (int i = (int)branch_children.size() - 1; i >= 0; i--) {
-                if (!branches.empty()) branches += ",";
-                branches += walk(branch_children[i], cur);
-            }
-            std::string main_part = walk(main_child, cur);
-            if (!branches.empty())
-                return "\\overset{" + branches + "}{" + label + "}" + main_part;
-            return label + main_part;
+            // hat1 touches block: fall through to per-curve rendering
+            visited[cur] = true;
         }
 
-        // Node / standard / \hat{1}
+        // Node / standard / hat{1}
         std::string label;
         if (has_blocks && cur < (int)bmap.curve_to_block.size() && bmap.is_node(cur))
             label = gauge_algebra_latex(bmap.block_of(cur).param);
@@ -522,7 +541,7 @@ std::string if_to_latex_hat1(const Eigen::MatrixXi& IF, int hat1_idx,
         if (children.empty()) return label;
         if (children.size() == 1) return label + walk(children[0], cur);
 
-        // Branch point
+        // Branch point: main chain continues, side branches use walk_branch (reversed)
         int main_child = -1;
         std::vector<int> branch_children;
         for (int c : children) {
@@ -536,31 +555,63 @@ std::string if_to_latex_hat1(const Eigen::MatrixXi& IF, int hat1_idx,
                 branch_children.push_back(children[i]);
         }
 
-        std::string branches;
-        for (int i = (int)branch_children.size() - 1; i >= 0; i--) {
-            int bc = branch_children[i];
-            // Walk branch as chain
-            std::vector<std::string> chain;
-            int nd = bc;
-            while (nd >= 0) {
-                visited[nd] = true;
-                chain.push_back(curve_label(nd));
-                int next = -1;
-                for (auto& [nb, w] : adj[nd])
-                    if (!visited[nb]) { next = nb; break; }
-                nd = next;
-            }
-            std::reverse(chain.begin(), chain.end());
-            std::string br;
-            for (auto& lbl : chain) br += lbl;
-            if (!branches.empty()) branches += ",";
-            branches += br;
-        }
+        std::vector<std::string> br_strs;
+        for (int i = (int)branch_children.size() - 1; i >= 0; i--)
+            br_strs.push_back(walk_branch(branch_children[i]));
 
         std::string main_part = walk(main_child, cur);
-        if (!branches.empty())
-            return "\\overset{" + branches + "}{" + label + "}" + main_part;
-        return label + main_part;
+        if (br_strs.size() == 1)
+            return "\\overset{" + br_strs[0] + "}{" + label + "}" + main_part;
+        std::string under;
+        for (size_t i = 1; i < br_strs.size(); i++) {
+            if (!under.empty()) under += ",";
+            under += br_strs[i];
+        }
+        return "\\overset{" + br_strs[0] + "}{\\underset{" + under + "}{" + label + "}}" + main_part;
+    };
+
+    // Branch walker: reversed order (tip→root), recursive for sub-branches
+    walk_branch = [&](int cur) -> std::string {
+        visited[cur] = true;
+        std::string label;
+        if (has_blocks && cur < (int)bmap.curve_to_block.size() && bmap.is_node(cur))
+            label = gauge_algebra_latex(bmap.block_of(cur).param);
+        else
+            label = curve_label(cur);
+
+        std::vector<int> children;
+        for (auto& [nb, w] : adj[cur])
+            if (!visited[nb]) children.push_back(nb);
+
+        if (children.empty()) return label;
+        if (children.size() == 1) return walk_branch(children[0]) + label;  // reversed!
+
+        // Sub-branch within a branch
+        int main_child = -1;
+        std::vector<int> sub_branches;
+        for (int c : children) {
+            if (main_child < 0 && c != hat1_idx) main_child = c;
+            else sub_branches.push_back(c);
+        }
+        if (main_child < 0) {
+            main_child = children[0];
+            sub_branches.clear();
+            for (size_t i = 1; i < children.size(); i++)
+                sub_branches.push_back(children[i]);
+        }
+        std::vector<std::string> sub_strs;
+        for (int i = (int)sub_branches.size() - 1; i >= 0; i--)
+            sub_strs.push_back(walk_branch(sub_branches[i]));
+        std::string main_part = walk_branch(main_child);
+        if (sub_strs.size() == 1)
+            return main_part + "\\overset{" + sub_strs[0] + "}{" + label + "}";  // reversed!
+        std::string under;
+        for (size_t i = 1; i < sub_strs.size(); i++) {
+            if (!under.empty()) under += ",";
+            under += sub_strs[i];
+        }
+        return main_part + "\\overset{" + sub_strs[0] + "}{\\underset{" + under + "}{" + label + "}}";  // reversed!
+        return main_part + label;  // reversed!
     };
 
     return walk(start, -1);
@@ -616,14 +667,20 @@ std::string if_to_latex_hat1_multi(const Eigen::MatrixXi& base_IF,
 
         int main_child = children[0];
         std::vector<int> branch_children(children.begin() + 1, children.end());
-        std::string branches;
-        for (int i = (int)branch_children.size() - 1; i >= 0; i--) {
-            if (!branches.empty()) branches += ",";
-            branches += walk(branch_children[i], cur);
-        }
+        std::vector<std::string> br_strs;
+        for (int i = (int)branch_children.size() - 1; i >= 0; i--)
+            br_strs.push_back(walk(branch_children[i], cur));
         std::string main_part = walk(main_child, cur);
-        if (!branches.empty())
-            return "\\overset{" + branches + "}{" + label + "}" + main_part;
+        if (br_strs.size() == 1)
+            return "\\overset{" + br_strs[0] + "}{" + label + "}" + main_part;
+        if (br_strs.size() >= 2) {
+            std::string under;
+            for (size_t i = 1; i < br_strs.size(); i++) {
+                if (!under.empty()) under += ",";
+                under += br_strs[i];
+            }
+            return "\\overset{" + br_strs[0] + "}{\\underset{" + under + "}{" + label + "}}" + main_part;
+        }
         return label + main_part;
     };
 
@@ -1185,6 +1242,40 @@ int main(int argc, char* argv[]) {
                      "Non-unimodular $\\hat{1}$ SUGRA Bases: target $= (-1)$", to_m1);
         write_nonuni(("sugra_hat1_nonuni_to_m2" + suffix + ".tex").c_str(),
                      "Non-unimodular $\\hat{1}$ SUGRA Bases: target $= (-2)$", to_m2);
+    }
+
+    // ─── Dump extended intersection matrices (all bases) ───
+    {
+        std::string fname = "sugra_hat1_ext_matrices" + suffix + ".txt";
+        std::ofstream out(fname);
+        out << "# Extended intersection matrices for hat{1} bases (curve IF + b₀ row/col)\n";
+        out << "# b₀·hat1 = -1 (non-standard), b₀·C_i = C_i²+2 for others\n";
+        out << "# Format: header line then N×N matrix\n";
+        out << "# Header: T  det  sig_pos  sig_neg  sig_zero  N  target_si  hat1_idx  type\n";
+        out << "# type: U=unimodular, N=non-unimodular\n";
+        out << "# Total: " << filtered.size() << " bases\n\n";
+
+        int count = 0;
+        for (auto& r : filtered) {
+            auto ext = build_b0Q_hat1(r.final_IF, r.hat1_idx);
+            int n = ext.rows();
+            std::string type = (std::abs(r.sig.det) == 1) ? "U" : "N";
+            out << "# " << count++ << "\n";
+            out << r.anomaly.T << " " << r.sig.det << " "
+                << r.sig.sig_pos << " " << r.sig.sig_neg << " " << r.sig.sig_zero
+                << " " << n << " " << r.target_si << " " << r.hat1_idx
+                << " " << type << "\n";
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    if (j > 0) out << " ";
+                    out << ext(i, j);
+                }
+                out << "\n";
+            }
+            out << "\n";
+        }
+        out.close();
+        std::cout << "Written " << count << " extended matrices to " << fname << "\n";
     }
 
     // Summary
